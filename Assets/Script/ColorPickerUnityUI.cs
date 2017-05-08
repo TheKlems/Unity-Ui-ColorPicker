@@ -10,7 +10,13 @@ public class ColorPickerUnityUI : MonoBehaviour {
     public Image colorPalette;
     public float test;
 
-    void Update()
+
+    public void OnPress()
+    {
+        UpdateThumbPosition();
+    }
+
+    public void OnDrag()
     {
         UpdateThumbPosition();
     }
@@ -20,14 +26,18 @@ public class ColorPickerUnityUI : MonoBehaviour {
     {
         Vector2 spectrumScreenPosition = colorPalette.transform.position;
         Vector2 ThumbScreenPosition = thumb.transform.position;
-        // Vector2 position = ThumbScreenPosition - spectrumScreenPosition + SpectrumXY * 0.5f; --> SpectrumXY doit sûrement être le diamiètre du thumb
-        Vector2 position = ThumbScreenPosition - spectrumScreenPosition;
+        //float ThumbWidth = thumb.GetComponent<RectTransform>().rect.width;
+        //Vector2 SpectrumXY = new Vector2(0f, colorPalette.GetComponent<RectTransform>().rect.width);
+        Vector2 SpectrumXY = new Vector2(colorPalette.GetComponent<RectTransform>().rect.width, colorPalette.GetComponent<RectTransform>().rect.height);
+        Vector2 position = ThumbScreenPosition - spectrumScreenPosition + SpectrumXY * 0.5f; //--> SpectrumXY doit sûrement être le diamiètre du thumb
+        //Vector2 position = ThumbScreenPosition - spectrumScreenPosition;
         Texture2D texture = colorPalette.mainTexture as Texture2D;
 
         if (circular)
         {
             position = new Vector2((position.x / (colorPalette.GetComponent<RectTransform>().rect.width * colorPalette.transform.localScale.y)), 
                                     position.y / (colorPalette.GetComponent<RectTransform>().rect.height * colorPalette.transform.localScale.y));
+
         }else
         {
             position = new Vector2((position.x / colorPalette.GetComponent<RectTransform>().rect.width), (position.y / colorPalette.GetComponent<RectTransform>().rect.height));
@@ -35,7 +45,6 @@ public class ColorPickerUnityUI : MonoBehaviour {
 
         Color SelectedColor = texture.GetPixelBilinear(position.x, position.y);
         SelectedColor.a = 1;
-
         return SelectedColor;
     }
 
