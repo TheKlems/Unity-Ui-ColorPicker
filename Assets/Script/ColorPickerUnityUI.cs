@@ -26,11 +26,9 @@ public class ColorPickerUnityUI : MonoBehaviour {
     {
         Vector2 spectrumScreenPosition = colorPalette.transform.position;
         Vector2 ThumbScreenPosition = thumb.transform.position;
-        //float ThumbWidth = thumb.GetComponent<RectTransform>().rect.width;
-        //Vector2 SpectrumXY = new Vector2(0f, colorPalette.GetComponent<RectTransform>().rect.width);
         Vector2 SpectrumXY = new Vector2(colorPalette.GetComponent<RectTransform>().rect.width, colorPalette.GetComponent<RectTransform>().rect.height);
-        Vector2 position = ThumbScreenPosition - spectrumScreenPosition + SpectrumXY * 0.5f; //--> SpectrumXY doit sûrement être le diamiètre du thumb
-        //Vector2 position = ThumbScreenPosition - spectrumScreenPosition;
+        Vector2 position = ThumbScreenPosition - spectrumScreenPosition + SpectrumXY * 0.5f; 
+
         Texture2D texture = colorPalette.mainTexture as Texture2D;
 
         if (circular)
@@ -64,6 +62,24 @@ public class ColorPickerUnityUI : MonoBehaviour {
                 // Move the thumb to the new position
                 thumb.transform.position = newPos;
                 value = GetColor();
+            }
+        }
+        else
+        {
+            if (colorPalette.GetComponent<BoxCollider2D>())
+            {
+                Vector3 center = transform.position;
+                Vector3 position = Input.mousePosition;
+                Vector3 offset = position - center;
+                Vector3 Set = Vector3.ClampMagnitude(offset, (colorPalette.GetComponent<BoxCollider2D>().size.x + test));
+                Vector3 newPos = center + Set;
+
+                if (thumb.transform.position != newPos)
+                {
+                    // Move the thumb to the new position
+                    thumb.transform.position = newPos;
+                    value = GetColor();
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scene/demo.unity
+- path: Assets/_Scene/circular.unity
   isLoaded: 1
   isActive: 1
